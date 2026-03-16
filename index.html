@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATM Machine Simulator</title>
+
+<style>
+
+body{
+font-family: Arial;
+background: linear-gradient(120deg,#1d2671,#c33764);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+#atm{
+background:white;
+width:420px;
+padding:25px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+text-align:center;
+}
+
+h2{
+margin-bottom:10px;
+}
+
+input{
+padding:10px;
+margin:8px;
+width:80%;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+padding:10px 15px;
+margin:6px;
+border:none;
+border-radius:6px;
+background:#2ecc71;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#27ae60;
+}
+
+#exit{
+background:#e74c3c;
+}
+
+#exit:hover{
+background:#c0392b;
+}
+
+.menu{
+display:none;
+margin-top:15px;
+}
+
+#history{
+text-align:left;
+height:100px;
+overflow:auto;
+border:1px solid #ddd;
+padding:8px;
+margin-top:10px;
+font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="atm">
+
+<h2>ATM Machine</h2>
+
+<div id="login">
+
+<p>Enter ATM PIN</p>
+
+<input type="password" id="pin" placeholder="Enter PIN">
+<br>
+
+<button onclick="login()">Login</button>
+
+</div>
+
+
+<div id="menu" class="menu">
+
+<h3 id="balance">Balance : $1000</h3>
+
+<button onclick="showDeposit()">Deposit</button>
+<button onclick="showWithdraw()">Withdraw</button>
+<button onclick="checkBalance()">Check Balance</button>
+<button id="exit" onclick="exitATM()">Exit</button>
+
+<div id="depositDiv" style="display:none">
+<input type="number" id="depositAmount" placeholder="Enter deposit amount">
+<br>
+<button onclick="deposit()">Confirm Deposit</button>
+</div>
+
+<div id="withdrawDiv" style="display:none">
+<input type="number" id="withdrawAmount" placeholder="Enter withdraw amount">
+<br>
+<button onclick="withdraw()">Confirm Withdraw</button>
+</div>
+
+<h4>Transaction History</h4>
+
+<div id="history"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let balance = 1000;
+let correctPin = "1234";
+
+function login(){
+
+let userPin = document.getElementById("pin").value;
+
+if(userPin === correctPin){
+
+document.getElementById("login").style.display="none";
+document.getElementById("menu").style.display="block";
+
+}
+else{
+alert("Incorrect PIN");
+}
+
+}
+
+function updateBalance(){
+
+document.getElementById("balance").innerHTML="Balance : $" + balance;
+
+}
+
+function addHistory(text){
+
+let history=document.getElementById("history");
+
+history.innerHTML += text + "<br>";
+
+}
+
+function checkBalance(){
+
+alert("Your balance is $" + balance);
+
+}
+
+function showDeposit(){
+
+document.getElementById("depositDiv").style.display="block";
+document.getElementById("withdrawDiv").style.display="none";
+
+}
+
+function showWithdraw(){
+
+document.getElementById("withdrawDiv").style.display="block";
+document.getElementById("depositDiv").style.display="none";
+
+}
+
+function deposit(){
+
+let amt=parseFloat(document.getElementById("depositAmount").value);
+
+if(amt>0){
+
+balance += amt;
+
+updateBalance();
+
+addHistory("Deposited : $" + amt);
+
+alert("Deposit successful");
+
+}
+else{
+
+alert("Enter valid amount");
+
+}
+
+}
+
+function withdraw(){
+
+let amt=parseFloat(document.getElementById("withdrawAmount").value);
+
+if(amt>balance){
+
+alert("Insufficient Balance");
+
+}
+
+else if(amt>0){
+
+balance -= amt;
+
+updateBalance();
+
+addHistory("Withdrawn : $" + amt);
+
+alert("Withdrawal successful");
+
+}
+
+else{
+
+alert("Enter valid amount");
+
+}
+
+}
+
+function exitATM(){
+
+alert("Thank you for using ATM");
+
+location.reload();
+
+}
+
+</script>
+
+</body>
+</html>
